@@ -1,1 +1,1 @@
-java -cp .;E:\hotel_mgmt\mysql-connector-java-8.0.19\mysql-connector-java-8.0.19.jar 
+java -cp .;E:\hotel_mgmt\mysql-connector-java-8.0.19\mysql-connector-java-8.0.19.jar Hotel

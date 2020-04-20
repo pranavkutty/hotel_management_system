@@ -8,80 +8,7 @@ import java.time.temporal.*;
 
 class Hotel{
 
-	public static void main(String[] args) throws IOException, InterruptedException
-	{
-		try(
-			//connection object
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC","myuser","myuser");
-			//statement executing object
-			Statement stmt = conn.createStatement();
-			){
-			int choice1=0;
-			Scanner sc = new Scanner(System.in);
-			while(choice1 != 3)
-			{
-				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-				int admin_choice=0;
-				System.out.println(":::::::::::::::Welcome to Ustad Hotel:::::::::::::::");
-				System.out.println(":::::::::::::::::::Login Portal:::::::::::::::::::::");
-				System.out.println("1.	Admin Login");
-				System.out.println("2.	Customer");
-				System.out.println("3.	Exit");
-				System.out.print("Please select an option(1-3): ");
-				choice1 = sc.nextInt();
-				switch(choice1)
-				{
-					case 1:
-					{
-						String user="";
-						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-						while(!user.equals("exit") && admin_choice != 4)
-						{
-							System.out.println(":::::::::::::::::::Admin Login:::::::::::::::::::::");
-							System.out.println("Type exit in 'username' to return to main-menu");
-							System.out.print("Username: ");
-							user = sc.next();
-
-							Console console = System.console();
-							String pwd = new String(console.readPassword("Password: "));
-
-							if(user.equals("admin") && pwd.equals("admin"))
-							{
-								new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();				
-								System.out.println("Admin login successful!");
-								admin_choice = admin(sc,stmt);
-							}
-							else
-							{
-								new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-								System.out.println("Wrong credentials! Try again!");
-							}
-						}	
-						break;
-					}
-					case 2:
-					{
-						customer(sc,stmt);
-						break;
-					}
-					case 3:
-					{
-						System.out.println("Thank You! Please visit again!");
-						break;
-					}
-					default:
-					{
-						System.out.println("Kindly select a valid option!");
-						break;
-					}
-				}
-			}
-		}catch(SQLException ex){
-			ex.printStackTrace();
-		}
-	}
-
-	static void customer(Scanner sc,Statement stmt) throws IOException, InterruptedException
+	private void customer(Scanner sc,Statement stmt) throws IOException, InterruptedException
 	{
 		int id_counter =0,room_counter=0;
 		try
@@ -209,7 +136,7 @@ class Hotel{
 		}
 	}
 
-	static int admin(Scanner sc,Statement stmt) throws IOException, InterruptedException
+	private int admin(Scanner sc,Statement stmt) throws IOException, InterruptedException
 	{
 		int admin_choice=0;
 		try
@@ -302,5 +229,93 @@ class Hotel{
 			e.printStackTrace();
 		}
 		return admin_choice;
+	}
+
+	public int call_admin(Scanner sc,Statement stmt) throws IOException, InterruptedException
+	{
+		int choice = admin(sc,stmt);
+		return choice;
+	}
+
+	public void call_cust(Scanner sc,Statement stmt) throws IOException, InterruptedException
+	{
+		customer(sc,stmt);
+	}
+}
+
+class Main extends Hotel
+{
+	public static void main(String[] args) throws IOException, InterruptedException
+	{
+		Main m = new Main();
+		try(
+			//connection object
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC","myuser","myuser");
+			//statement executing object
+			Statement stmt = conn.createStatement();
+			){
+			int choice1=0;
+			Scanner sc = new Scanner(System.in);
+			while(choice1 != 3)
+			{
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+				int admin_choice=0;
+				System.out.println(":::::::::::::::Welcome to Ustad Hotel:::::::::::::::");
+				System.out.println(":::::::::::::::::::Login Portal:::::::::::::::::::::");
+				System.out.println("1.	Admin Login");
+				System.out.println("2.	Customer");
+				System.out.println("3.	Exit");
+				System.out.print("Please select an option(1-3): ");
+				choice1 = sc.nextInt();
+				switch(choice1)
+				{
+					case 1:
+					{
+						String user="";
+						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+						while(!user.equals("exit") && admin_choice != 4)
+						{
+							System.out.println(":::::::::::::::::::Admin Login:::::::::::::::::::::");
+							System.out.println("Type exit in 'username' to return to main-menu");
+							System.out.print("Username: ");
+							user = sc.next();
+
+							Console console = System.console();
+							String pwd = new String(console.readPassword("Password: "));
+
+							if(user.equals("admin") && pwd.equals("admin"))
+							{
+								new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();				
+								System.out.println("Admin login successful!");
+								admin_choice = m.call_admin(sc,stmt);
+							}
+							else
+							{
+								new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+								System.out.println("Wrong credentials! Try again!");
+							}
+						}	
+						break;
+					}
+					case 2:
+					{
+						m.call_cust(sc,stmt);
+						break;
+					}
+					case 3:
+					{
+						System.out.println("Thank You! Please visit again!");
+						break;
+					}
+					default:
+					{
+						System.out.println("Kindly select a valid option!");
+						break;
+					}
+				}
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}
 	}
 }
