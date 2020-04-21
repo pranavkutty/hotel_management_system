@@ -6,6 +6,7 @@ import java.io.Console;
 import java.time.*;
 import java.time.temporal.*;
 
+//class with customer and admin module having database access
 class Hotel{
 
 	private void customer(Scanner sc,Statement stmt) throws IOException, InterruptedException
@@ -21,6 +22,7 @@ class Hotel{
 			}
 			int customer_choice = 0;
 
+			//customer main menu
 			while(customer_choice != 3)
 			{
 				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -136,6 +138,7 @@ class Hotel{
 		}
 	}
 
+	//admin module
 	private int admin(Scanner sc,Statement stmt) throws IOException, InterruptedException
 	{
 		int admin_choice=0;
@@ -247,7 +250,10 @@ class Main extends Hotel
 {
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
+		//object of child class
 		Main m = new Main();
+
+		//try database connection
 		try(
 			//connection object
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentdb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC","myuser","myuser");
